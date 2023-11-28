@@ -1,4 +1,6 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using W.O.API.Data;
 using W.O.API.Data.Repositories.Abstract;
 using W.O.API.Data.Repositories.Concrete;
@@ -20,11 +22,9 @@ builder.Services.AddScoped<IWorkOrderRepository, WorkOrderRepository>();
 builder.Services.AddScoped<IVisitRepository, VisitRepository>();
 builder.Services.AddScoped<IPartRepository, PartRepository>();
 
-
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
-
-
 
 
 // Configure the HTTP request pipeline.

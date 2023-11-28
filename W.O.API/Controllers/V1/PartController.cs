@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using W.O.API.Contracts.V1;
 using W.O.API.Contracts.V1.Parts;
+using W.O.API.Contracts.V1.WorkOrders;
 using W.O.API.Data.Repositories.Abstract;
 using W.O.API.Domain;
 using W.O.API.Domain.Common.Helpers;
@@ -44,8 +45,20 @@ namespace W.O.API.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Parts.Add)]
-        public async Task<IActionResult> AddPartAsync([FromBody] CreatePartRequest request)
+        public async Task<IActionResult> AddPartAsync([FromBody] CreatePartRequest request,
+            [FromServices] IValidator<CreatePartRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var currentVisitPartCount = (await _visitRepo.GetByIdAsync(request.visitId))?.TotalParts;
 
             if (currentVisitPartCount is null)
@@ -75,8 +88,20 @@ namespace W.O.API.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Parts.Update)]
-        public async Task<IActionResult> UpdatePartAsync([FromRoute] Guid id, [FromBody] UpdatePartRequest request)
+        public async Task<IActionResult> UpdatePartAsync([FromRoute] Guid id, [FromBody] UpdatePartRequest request,
+            [FromServices] IValidator<UpdatePartRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var part = await _partRepo.GetByIdAsync(id);
 
             if (part == null) return NotFound($"Part with given id: {id} does not exists!");
