@@ -6,7 +6,7 @@ A W.O. stands for Work Orders. It's a simple app to register and manage work ord
 Currently only API is available.
 
 What will be included in future releases:
-CQRS, DDD, unit, functional tests.
+CQRS, DDD, unit, functional tests, and GraphQl support for specicific endpoints.
 
 In order to start the project 
 1. you'll need to add a valid SQL Connection string in appsettings.json
