@@ -5,16 +5,16 @@ using static W.O.API.Contracts.V1.ApiRoutes;
 namespace W.O.API.Contracts.V1.Visits;
 
 #region Requests
-public record UpdateVisitRequest(string? assigneeFullName, string? assignedFrom);
+public record UpdateVisitRequest(string? assigneeFullName, DateTime? assignedFrom);
 
-public record CreateVisitRequest(Guid workOrderId, string assigneeFullName, string assignedFrom, ICollection<CreatePartWithinVisitRequest> parts)
+public record CreateVisitRequest(Guid workOrderId, string assigneeFullName, DateTime assignedFrom, ICollection<CreatePartWithinVisitRequest> parts)
 {
     public static explicit operator Visit(CreateVisitRequest request)
     {
         return new Visit(
             request.workOrderId,
             request.assigneeFullName,
-            DateTime.Parse(request.assignedFrom),
+            request.assignedFrom,
             request.parts.Select(p => (Part)p ).ToList());
     }
 }
