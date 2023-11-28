@@ -11,9 +11,12 @@ CQRS, DDD, unit, functional tests.
 In order to start the project 
 1. you'll need to add a valid SQL Connection string in appsettings.json
 
-2. run 'dotnet ef migrations add InitialCreate' in .NET CLI in order to add migrations.Make sure that you're running the command inside W.O.API folder
+2. run 'dotnet ef migrations add InitialCreate' in .NET CLI in order to add migrations.Make sure that you're running the command inside W.O.API folder. Before running it, make sure you've dotnet ef tool installed. To install use : 
+'dotnet tool install --global dotnet-ef' command.
 
-Note: for now no rows will be added to selected database, for simplicity you can either use swagger or postman to see what's available 
+
+Note: If you ever come across an issue saying can't find Environmental Variables, this means you have to update your visual studio if you're using it, or you can specify SQL connection within command as an argument. 
+for now no rows will be added to selected database, for simplicity you can either use swagger or postman to see what's available
 
 Postman collection : https://api.postman.com/collections/26626853-93931c7f-1984-49e7-a439-3bcf8c098bab?access_key=PMAT-01HGAZ6S50Y6PAC8SETKNK3NFD
 
