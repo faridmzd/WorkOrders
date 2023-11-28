@@ -57,7 +57,7 @@ Postman collection : https://api.postman.com/collections/26626853-93931c7f-1984-
 | `startAt`    | `date` | **Required**|
 | `finishAt`   | `date` | **Required**|
 
-one of the valid phone number formats would be: "XX-XXX-XXX-XXX"
+one of the valid phone number formats would be: "XX-XXX-XXX-XXXX"
 as for now we don't support country extensions.
 ```https
   Example payload {
