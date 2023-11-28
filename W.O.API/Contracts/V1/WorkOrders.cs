@@ -4,13 +4,13 @@ using W.O.API.Domain;
 namespace W.O.API.Contracts.V1.WorkOrders;
 
 #region Requests
-public record UpdateWorkOrderRequest(string? title, string? description, string? phone, string? email, DateTime? startAt, DateTime? finishAt);
+public record UpdateWorkOrderRequest(string? title, string? description, string? phone, string? email, string? startAt, string? finishAt);
 
-public record CreateWorkOrderRequest(string title, string description, string phone, string email, DateTime startAt, DateTime finishAt)
+public record CreateWorkOrderRequest(string title, string description, string phone, string email, string startAt, string finishAt)
 {
     public static explicit operator WorkOrder(CreateWorkOrderRequest request)
     {
-        return new WorkOrder(request.title, request.description, request.phone, request.email, request.startAt, request.finishAt);
+        return new WorkOrder(request.title, request.description, request.phone, request.email, DateTime.Parse(request.startAt), DateTime.Parse(request.finishAt));
     }
 }
 #endregion
