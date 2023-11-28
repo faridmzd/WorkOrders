@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W.O.Web", "..\W.O\W.O.Web\W.O.Web.csproj", "{01B11C1C-9B16-4CCD-8592-F36C61DE88CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W.O.API", "..\W.O\W.O.API\W.O.API.csproj", "{DB45009E-EE29-4EE8-9FAB-2B6CFC88AC02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "W.O.Web", "..\W.O\W.O.Web\W.O.Web.csproj", "{257ADA61-F301-4B70-A451-78CC7324F54E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{01B11C1C-9B16-4CCD-8592-F36C61DE88CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01B11C1C-9B16-4CCD-8592-F36C61DE88CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01B11C1C-9B16-4CCD-8592-F36C61DE88CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01B11C1C-9B16-4CCD-8592-F36C61DE88CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB45009E-EE29-4EE8-9FAB-2B6CFC88AC02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB45009E-EE29-4EE8-9FAB-2B6CFC88AC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB45009E-EE29-4EE8-9FAB-2B6CFC88AC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB45009E-EE29-4EE8-9FAB-2B6CFC88AC02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{257ADA61-F301-4B70-A451-78CC7324F54E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257ADA61-F301-4B70-A451-78CC7324F54E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257ADA61-F301-4B70-A451-78CC7324F54E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257ADA61-F301-4B70-A451-78CC7324F54E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
