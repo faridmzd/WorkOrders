@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using W.O.API.Contracts.V1;
 using W.O.API.Contracts.V1.WorkOrders;
 using W.O.API.Data.Repositories.Abstract;
 using W.O.API.Domain;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using FluentValidation.Results;
+using W.O.API.Domain.Common.Helpers;
 
 namespace W.O.API.Controllers.V1
 {
@@ -31,12 +31,24 @@ namespace W.O.API.Controllers.V1
 
             return order != null
                  ? Ok((GetWorkOrderResponse)order)
-                 : Problem($"Work order with given id: {id} does not exist!",);
+                 : Problem($"Work order with given id: {id} does not exist!");
         }
 
         [HttpPost(ApiRoutes.WorkOrders.Add)]
-        public async Task<IActionResult> AddWorkOrderAsync([FromBody] CreateWorkOrderRequest request)
+        public async Task<IActionResult> AddWorkOrderAsync([FromBody] CreateWorkOrderRequest request,
+            [FromServices] IValidator<CreateWorkOrderRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var newWorkOrder = (WorkOrder)request;
 
             var addedWorkOrder = await _workOrderRepo.AddAsync(newWorkOrder);
@@ -55,13 +67,31 @@ namespace W.O.API.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.WorkOrders.Update)]
-        public async Task<IActionResult> UpdateWorkOrderAsync([FromRoute] Guid id, [FromBody] UpdateWorkOrderRequest request)
+        public async Task<IActionResult> UpdateWorkOrderAsync([FromRoute] Guid id, [FromBody] UpdateWorkOrderRequest request,
+            [FromServices] IValidator<UpdateWorkOrderRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var order = await _workOrderRepo.GetByIdAsync(id);
 
             if (order == null) return NotFound($"Work order with given id: {id} does not exists!");
 
-            var orderToUpdate = order.Update(request.title, request.description, request.phone, request.email,request.startAt, request.finishAt);
+            var orderToUpdate = order.Update(
+                request.title, 
+                request.description, 
+                request.phone, 
+                request.email,
+                DateTime.TryParse(request.startAt, out DateTime sResult) == true ? sResult : null,
+                DateTime.TryParse(request.finishAt, out DateTime fResult) == true ? fResult : null);
 
             await _workOrderRepo.UpdateAsync(orderToUpdate);
 
