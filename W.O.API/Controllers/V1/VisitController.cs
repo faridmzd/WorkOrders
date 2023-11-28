@@ -100,8 +100,7 @@ namespace W.O.API.Controllers.V1
 
             if (visit == null) return NotFound($"Visit with given id: {id} does not exist!");
 
-            var visitToUpdate = visit.Update(request.assigneeFullName,
-                DateTime.TryParse(request.assignedFrom, out DateTime sResult) == true ? sResult : null);
+            var visitToUpdate = visit.Update(request.assigneeFullName, request.assignedFrom);
 
             await _visitRepo.UpdateAsync(visitToUpdate);
 

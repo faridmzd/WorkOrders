@@ -23,14 +23,18 @@ namespace W.O.API.Validators
             }
         }
 
-        private static bool IsValidDate(string? date)
+        private static bool IsValidDate(DateTime? date)
         {
-            if (DateTime.TryParse(date?.ToString(), out DateTime validatedDate))
+            if (date is not null)
             {
-                return !validatedDate.Equals(default(DateTime));
+                return !date.Equals(default(DateTime));
             }
+            return true;
+        }
 
-            return false;
+        private static bool IsValidDate(DateTime date)
+        {
+            return !date.Equals(default(DateTime));
         }
 
         public sealed class CreateNoteRequestValidator : AbstractValidator<CreateWorkOrderRequest>
@@ -69,7 +73,7 @@ namespace W.O.API.Validators
                     .WithMessage(" \'Finish date\' is not valid");
 
                 RuleFor(x => x).
-                    Must(x => DateTime.Parse(x.finishAt) > DateTime.Parse(x.startAt))
+                    Must(x=> x.finishAt > x.startAt)
                    .WithMessage("Finish time must be greater than start time");
             }
         }
@@ -106,7 +110,7 @@ namespace W.O.API.Validators
                     .WithMessage(" \'Finish date\' is not valid");
 
                 RuleFor(x => x).
-                    Must(x => DateTime.Parse(x.finishAt!) > DateTime.Parse(x.startAt!)).When(d => d.startAt != null & d.finishAt != null)
+                    Must(x => x.finishAt > x.startAt).When(d => d.startAt != null & d.finishAt != null)
                    .WithMessage("Finish time must be greater than start time");
             }
         }
@@ -141,12 +145,12 @@ namespace W.O.API.Validators
                     .WithMessage(" \'Assignee name\' is required");
 
                     p.RuleFor(x => x.amount)
-                    .PrecisionScale(18,2,false);
+                    .PrecisionScale(18, 2, false);
 
                     p.RuleFor(x => x.currency).
                     IsEnumName(typeof(Currency),
                     caseSensitive: false)
-                    .WithMessage($"Only {string.Join(", ",CurrencyHelper.GetCurrencyNames())} are allowed as a currency");
+                    .WithMessage($"Only {string.Join(", ", CurrencyHelper.GetCurrencyNames())} are allowed as a currency");
 
                     p.RuleFor(x => x.quantity)
                      .GreaterThan(0)

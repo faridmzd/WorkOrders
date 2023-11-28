@@ -90,8 +90,8 @@ namespace W.O.API.Controllers.V1
                 request.description, 
                 request.phone, 
                 request.email,
-                DateTime.TryParse(request.startAt, out DateTime sResult) == true ? sResult : null,
-                DateTime.TryParse(request.finishAt, out DateTime fResult) == true ? fResult : null);
+                request.startAt,
+                request.finishAt);
 
             await _workOrderRepo.UpdateAsync(orderToUpdate);
 
