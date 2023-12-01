@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using W.O.API.Contracts.V1;
 using W.O.API.Contracts.V1.Visits;
+using W.O.API.Contracts.V1.WorkOrders;
 using W.O.API.Data.Repositories.Abstract;
 using W.O.API.Domain;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using W.O.API.Domain.Common.Helpers;
 
 namespace W.O.API.Controllers.V1
 {
@@ -38,8 +39,20 @@ namespace W.O.API.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Visits.Add)]
-        public async Task<IActionResult> AddVisitAsync([FromBody] CreateVisitRequest request)
+        public async Task<IActionResult> AddVisitAsync([FromBody] CreateVisitRequest request,
+            [FromServices] IValidator<CreateVisitRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var currentWorkOrderVisitCount = (await _workOrderRepo.GetByIdAsync(request.workOrderId))?.TotalVisits;
 
             if (currentWorkOrderVisitCount is null)
@@ -69,8 +82,20 @@ namespace W.O.API.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Visits.Update)]
-        public async Task<IActionResult> UpdateVisitAsync([FromRoute] Guid id, [FromBody] UpdateVisitRequest request)
+        public async Task<IActionResult> UpdateVisitAsync([FromRoute] Guid id, [FromBody] UpdateVisitRequest request,
+            [FromServices] IValidator<UpdateVisitRequest>? validator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(validator));
+
+            ValidationResult validationResult = validator!.Validate(request);
+
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(this.ModelState);
+
+                return ValidationProblem();
+            }
+
             var visit = await _visitRepo.GetByIdAsync(id);
 
             if (visit == null) return NotFound($"Visit with given id: {id} does not exist!");
