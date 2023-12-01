@@ -1,0 +1,47 @@
+﻿@inherits PostWorkOrderFormBase
+
+
+<MudDialog>
+    <DialogContent>
+	<MudForm Model="@model" @ref="@form" Validation="@(orderValidator.ValidateValue)" ValidationDelay="0">
+		<MudCardContent>
+				<MudTextField @bind-Value="model.Title"                              
+							  For="@(() => model.Title)"
+							  Immediate="true"
+							  Label="Title" />
+
+				<MudTextField @bind-Value="model.Email"
+							  For="@(() => model.Email)"
+							  Immediate="true"
+							  Label="Email" />
+
+				<MudTextField @bind-Value="model.Phone"
+							  For="@(() => model.Phone)"
+							  Immediate="true"
+							  Label="Phone" />
+
+				<MudDatePicker @bind-Date="model.StartAt"
+							  Validation="@(orderValidator.ValidateValue)"
+							  For="@(() => model.StartAt)"
+							  Label="Starts" />
+
+				<MudDatePicker 
+							  @bind-Date="model.FinishAt"
+							  Validation="@(orderValidator.ValidateValue)"
+							  For="@(() => model.FinishAt)"
+							  Label="Ends" />
+
+				<MudTextField @bind-Value="model.Description"
+							  For="@(() => model.Description)"
+							  Immediate="true"
+							  Label="Description" />
+		</MudCardContent>
+		<MudCardContent Class="pa-0">
+		</MudCardContent>
+	</MudForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Create</MudButton>
+	</DialogActions>
+    </MudDialog>

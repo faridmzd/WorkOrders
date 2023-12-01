@@ -31,7 +31,7 @@ namespace W.O.API.Controllers.V1
 
             return order != null
                  ? Ok((GetWorkOrderResponse)order)
-                 : Problem($"Work order with given id: {id} does not exist!",);
+                 : Problem($"Work order with given id: {id} does not exist!");
         }
 
         [HttpPost(ApiRoutes.WorkOrders.Add)]

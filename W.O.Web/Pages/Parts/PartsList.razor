@@ -1,0 +1,49 @@
+﻿@inherits PartsListBase
+
+@if (Parts is not null)
+{
+    
+
+  <div class="table-responsive">
+                <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                    <thead class="bg-none bgc-default-tp1">
+                        <tr class="text-grey">
+                            <th class="opacity-2">No</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-95 text-secondary-d3">
+                        <tr></tr>
+            @{
+                int index = 0;
+                decimal totalPrice = 0;
+            }
+
+            @foreach (var item in Parts)
+            {
+                            <tr>
+                                <td>@(++index).</td>
+                                <td>@item.Description</td>
+                                <td>@item.Quantity</td>
+                                <td class="text-95">$@item.Amount</td>
+                                <td class="text-secondary-d2">$@item.TotalPrice</td>
+                            </tr>
+
+                totalPrice += item.TotalPrice;
+            }
+                    </tbody>
+                </table>
+            </div>
+                            <div class="row my-7  bgc-primary-l1 p-2">
+                                <div style="padding-right:30" class="col-6">
+                                    Total Amount
+                                </div>
+                                    <div style="padding-right:30" class="col-5">
+                                    <span class="text-150 text-success-d3 opacity-2">$@totalPrice</span>
+                               </div>
+    </div>
+}

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using W.O.API.Data;
 using W.O.API.Data.Repositories.Abstract;
 using W.O.API.Data.Repositories.Concrete;
@@ -33,6 +34,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(policy =>
+{
+    policy.WithOrigins("https://localhost:7166", "http://localhost:5293")
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+}
+);
 
 app.UseHttpsRedirection();
 
