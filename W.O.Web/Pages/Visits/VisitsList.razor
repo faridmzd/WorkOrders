@@ -1,0 +1,26 @@
+﻿@using W.O.Web.Pages.Parts
+@inherits VisitsListBase
+
+@if (Visits is not null)
+{
+                    <span class="text-600 text-110 text-grey-m1 align-middle">Visits</span>
+                    <button @onlick()>Add Visit</button>
+                    <hr>
+
+    int index = 0;
+
+    @foreach (var item in Visits)
+    {
+            <details>
+
+            <summary>#@(++index) 
+            <span class="text-sm text-grey-m2 align-middle">Assignee:</span>
+            <span class="text-600 text-110 text-grey-m1 align-middle">@item.AssigneeFullName</span>
+
+            <span class="text-sm text-grey-m2 align-middle">Assigned from :</span>
+            <span class="text-600 text-110 text-grey-m1 align-middle"> @item.AssignedFrom.ToString("dddd, dd MMMM yyyy HH:mm") </span>
+                <hr/></summary>
+            <PartsList Parts="item.Parts"></PartsList>
+            </details>
+    }
+}

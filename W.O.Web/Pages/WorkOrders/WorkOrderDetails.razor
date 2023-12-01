@@ -1,0 +1,160 @@
+﻿@page "/workOrderDetails/{Id:guid}"
+@using W.O.Web.Pages.Visits
+@inherits WorkOrderDetailsBase
+
+@if (Result.Value == null)
+{
+                <h3>Loading work orders...</h3>        
+}
+else if (Result.IsFailed)
+{
+    <h3>Error...</h3>
+}
+else
+{
+    var order = Result.Value;
+
+
+<div class="page-body page-content container">
+    <div class="page-header text-blue-d2">
+        <h1 class="page-title text-secondary-d1">@order.Title</h1>
+
+        <div class="page-tools">
+            <div class="action-buttons">
+                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
+                    <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
+                    Print
+                </a>
+                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
+                    <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
+                    Export
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0">
+        <div class="row mt-4">
+            <div class="col-12 col-lg-12">
+                <hr class="row brc-default-l1 mx-n1 mb-4" />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <span class="text-sm text-grey-m2 align-middle">Company:</span>
+                            <span class="text-600 text-110 text-grey-m1 align-middle">Google</span>
+                        </div>
+                        <div class="text-grey-m2">
+                            <div class="my-1">
+                                Street, City, zip code address
+                            </div>
+                            <div class="my-1"><i class="fa fa-envelope fa-flip-horizontal text-secondary"></i> <b class="text-600">@order.Email</b></div>
+                            <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">@order.Phone</b></div>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                        <hr class="d-sm-none" />
+                        <div class="text-grey-m2">
+                            <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                Starts at : @order.StartAt.ToString("dddd, dd MMMM yyyy HH:mm")
+                            </div>
+                            <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                Finishes at : @order.FinishAt.ToString("dddd, dd MMMM yyyy HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                   <p class="text-secondary-d1 text-105">@order.Description</p>
+                </div>
+
+            <MudDataGrid 
+             T="VisitDTO"
+             Items="@Visits"
+             CommittedItemChanges="@CommittedVisitChanges"
+             ReadOnly="false"
+             Dense="false"
+             EditMode="@DataGridEditMode.Form"
+             EditTrigger="@(DataGridEditTrigger.Manual)" 
+             ColumnResizeMode="ResizeMode.Column" 
+             CanCancelEdit="true"
+             Hover=true>
+                          
+                    <ToolBarContent>
+                        <MudText  Typo="Typo.h6">Visits</MudText>
+                         <MudSpacer />
+                              <MudIconButton  OnClick="@AddVisit"  Size="@Size.Large" Icon="@Icons.Material.Outlined.Add" Color="Color.Success"  />
+                    </ToolBarContent>  
+                <Columns>
+                    <HierarchyColumn T="VisitDTO"/>
+                    <PropertyColumn Property="x => x.AssigneeFullName" />
+                    <PropertyColumn Property="x => x.AssignedFrom" />
+
+            <TemplateColumn  CellClass="d-flex justify-end">
+             <CellTemplate>
+                 <MudIconButton  Size="@Size.Medium" Icon="@Icons.Material.Outlined.Edit" Color="Color.Warning" OnClick="@context.Actions.StartEditingItemAsync" />
+                 <MudIconButton  Size="@Size.Medium" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick=@(( async () => await DeleteVisitButtonClickedAsync(context.Item)))  />
+             </CellTemplate>
+             </TemplateColumn>
+            </Columns>
+            <ChildRowContent>
+
+                  <MudDataGrid 
+                 T="PartDTO"
+                 Items="@context.Item.Parts"
+                 CommittedItemChanges="@CommittedPartChanges"
+                 ReadOnly="false"
+                 Dense="false"
+                 EditMode="@DataGridEditMode.Form"
+                 EditTrigger="@(DataGridEditTrigger.Manual)" 
+                 ColumnResizeMode="ResizeMode.Column" 
+                 CanCancelEdit="true"
+                 Hover=true>
+                 <ToolBarContent>
+                            <MudText  Typo="Typo.h6">Parts</MudText>
+                            <MudSpacer />
+                                <MudIconButton  Size="@Size.Medium" Icon="@Icons.Material.Outlined.Add" Color="Color.Success" OnClick=@(( async () => await AddPart(context.Item.Id))) />
+                        </ToolBarContent> 
+             <Columns>
+             <PropertyColumn Property="x => x.Description"/>
+             <PropertyColumn Property="x => x.Quantity"/>
+             <PropertyColumn Property="x => x.Amount"/>
+             <PropertyColumn Property="x => x.Currency"/>
+             <PropertyColumn Property="x => x.TotalPrice"/>
+
+                 <TemplateColumn Context="childContext" CellClass="d-flex justify-end">
+             <CellTemplate>
+                 <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Warning" OnClick="@childContext.Actions.StartEditingItemAsync" />
+                     <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick=@(( async () => await DeletePartButtonClickedAsync(childContext.Item)))  />
+             </CellTemplate>
+             </TemplateColumn>
+         </Columns>
+     </MudDataGrid>
+
+            </ChildRowContent>
+
+        </MudDataGrid>
+
+                    @* <MudExpansionPanels>
+
+                        @for (var i = 0; i < order.Visits.Count(); i++)
+                        {
+                    <MudExpansionPanel>
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudText><strong>#@(i+1)</strong>    </MudText>
+                                <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Warning"  />
+                                <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error"  />
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+
+                        </ChildContent>
+                    </MudExpansionPanel>
+                        }
+            </MudExpansionPanels> *@
+                </div>
+            </div>
+        </div>
+    </div>
+    }

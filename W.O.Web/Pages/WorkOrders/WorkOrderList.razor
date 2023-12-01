@@ -1,0 +1,95 @@
+﻿@page "/"
+@inherits WorkOrdersListBase
+@using W.O.Web.Models
+
+
+@if (Orders == null)
+{
+                       <MudProgressCircular Color="Color.Success" Size="Size.Large" Indeterminate="true" />
+}
+else if (Result.IsFailed)
+{
+                            <h3>Error...</h3>   
+}
+else if (Orders.Any() || Result.IsSuccess)
+{
+     <MudButton OnClick="@AddWorkOrder" Color="@Color.Success" Class="add-item-btn">Add Work Order</MudButton>
+     <MudSwitch @bind-Checked="@_readOnly" Color="Color.Primary">Read Only</MudSwitch>
+
+         <MudDataGrid
+         RowClass="cursor-pointer" 
+         T="WorkOrderDTO" 
+         Items="@Orders" 
+         EditMode="@(DataGridEditMode.Form)"
+         CommittedItemChanges="@CommittedItemChanges"
+         Dense="false"
+         ReadOnly="@_readOnly"
+         EditTrigger="@(DataGridEditTrigger.Manual)" 
+         ColumnResizeMode="ResizeMode.Column" 
+         CanCancelEdit="true"
+         Hover=true
+         RowClick="RowClickedAsync">
+         
+     <ToolBarContent>
+            <MudText  Typo="Typo.h6">Periodic Elements</MudText>
+        </ToolBarContent>         
+        <Columns>
+             <PropertyColumn Property="x => x.Title"/>
+             <PropertyColumn Hidden="true"; Property="x => x.Description"/>
+            <PropertyColumn Property="x => x.Email"/>
+         <PropertyColumn Property="x => x.Phone"/>
+         <PropertyColumn Property="x => x.TotalParts"/>
+         <PropertyColumn Property="x => x.TotalVisits"/>
+         <PropertyColumn Property="x => x.StartAt"/>
+         <PropertyColumn Property="x => x.FinishAt"/>
+
+             <TemplateColumn Hidden="@(_readOnly)" CellClass="d-flex justify-end">
+         <CellTemplate>
+         <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Warning" OnClick="@context.Actions.StartEditingItemAsync" />
+         <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick=@(( async () => await DeleteButtonClickedAsync(context.Item))) />
+         </CellTemplate>
+         </TemplateColumn>
+     </Columns>
+ </MudDataGrid>
+
+
+
+
+    @*  <MudButton OnClick="@AddWorkOrder" Color="@Color.Success" Class="add-item-btn">Add Work Order</MudButton>
+         <MudSwitch @bind-Checked="@_readOnly" Color="Color.Primary">Read Only</MudSwitch>
+
+             <MudDataGrid 
+             @ref="dataGrid" 
+             RowClass="cursor-pointer" 
+             T="WorkOrderDTO" 
+             Items="@Orders" 
+             EditMode="@(DataGridEditMode.Form)"
+             CommittedItemChanges="@CommittedItemChanges"
+             Dense="false"
+             ReadOnly="@_readOnly"
+             EditTrigger="@(DataGridEditTrigger.Manual)" 
+             ColumnResizeMode="ResizeMode.Column" 
+             Hover=true
+             RowClick="RowClickedAsync">
+
+             <Columns>
+                 <PropertyColumn Property="x => x.Title"/>
+                 <PropertyColumn Hidden="true"; Property="x => x.Description"/>
+                <PropertyColumn Property="x => x.Email"/>
+             <PropertyColumn Property="x => x.Phone"/>
+             <PropertyColumn Property="x => x.TotalParts"/>
+             <PropertyColumn Property="x => x.TotalVisits"/>
+             <PropertyColumn Property="x => x.StartAt"/>
+             <PropertyColumn Property="x => x.FinishAt"/>
+
+                 <TemplateColumn Hidden="@(_readOnly)" CellClass="d-flex justify-end">
+             <CellTemplate>
+             <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Warning" OnClick="@context.Actions.StartEditingItemAsync" />
+             <MudIconButton  Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick=@(( async () => await DeleteButtonClickedAsync(context.Item))) />
+             </CellTemplate>
+             </TemplateColumn>
+         </Columns>
+     </MudDataGrid> *@
+
+
+}

@@ -1,0 +1,35 @@
+﻿@inherits PostPartFormBase
+
+
+<MudDialog>
+	<DialogContent>
+	<MudForm Model="@part" @ref="@form" Validation="@(partValidator.ValidateValue)" ValidationDelay="0">
+		<MudCardContent>
+
+				<MudTextField @bind-Value="part.Description"                              
+							  For="@(() => part.Description)"
+							  Immediate="true"
+							  Label="Description" />
+
+				<MudTextField @bind-Value="part.Currency"                              
+							  For="@(() => part.Currency)"
+							  Immediate="true"
+							  Label="Currency" />
+
+				<MudNumericField @bind-Value="part.Amount"
+							  For="@(() => part.Amount)"
+							  Immediate="false"
+							  Label="Amount" />
+
+				<MudNumericField @bind-Value="part.Quantity"
+							  For="@(() => part.Quantity)"
+							  Immediate="false"
+							  Label="Quantity" />
+		</MudCardContent>
+	</MudForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Create</MudButton>
+	</DialogActions>
+	</MudDialog>

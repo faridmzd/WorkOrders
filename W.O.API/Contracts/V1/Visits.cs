@@ -21,7 +21,7 @@ public record CreateVisitRequest(Guid workOrderId, string assigneeFullName, Date
 #endregion
 
 #region Responses
-public record GetVisitResponse(Guid Id, Guid workOrderId, string assigneeFullName, DateTime assignedFrom, int totalParts, IEnumerable<GetPartResponse> parts)
+public record GetVisitResponse(Guid Id, Guid workOrderId, string assigneeFullName, DateTime assignedFrom, IEnumerable<GetPartResponse> parts)
 {
     public static explicit operator GetVisitResponse(Visit visit)
     {
@@ -30,7 +30,6 @@ public record GetVisitResponse(Guid Id, Guid workOrderId, string assigneeFullNam
             visit.WorkOrderId,
             visit.AssigneeFullName,
             visit.AssignedFrom,
-            visit.TotalParts,
             visit.Parts.Select(p => (GetPartResponse)p));
     }
 }

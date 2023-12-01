@@ -1,0 +1,46 @@
+﻿@inherits PostVisitFormBase
+
+
+<MudDialog>
+	<DialogContent>
+	<MudForm Model="@visit" @ref="@form" Validation="@(visitValidator.ValidateValue)" ValidationDelay="0">
+		<MudCardContent>
+				<MudTextField @bind-Value="visit.AssigneeFullName"                              
+							  For="@(() => visit.AssigneeFullName)"
+							  Immediate="true"
+							  Label="Assignee full name" />
+
+				<MudDatePicker @bind-Date="visit.AssignedFrom"
+							  Validation="@(visitValidator.ValidateValue)"
+							  For="@(() => visit.AssignedFrom)"
+							  Label="Starts" />
+
+                        <MudText  Typo="Typo.h6">At least 1 part is needed!</MudText>
+
+				<MudTextField @bind-Value="visit.Part.Description"                              
+							  For="@(() => visit.Part.Description)"
+							  Immediate="true"
+							  Label="Description" />
+
+				<MudTextField @bind-Value="visit.Part.Currency"                              
+							  For="@(() => visit.Part.Currency)"
+							  Immediate="true"
+							  Label="Currency" />
+
+				<MudNumericField @bind-Value="visit.Part.Amount"
+							  For="@(() => visit.Part.Amount)"
+							  Immediate="false"
+							  Label="Amount" />
+
+				<MudNumericField @bind-Value="visit.Part.Quantity"
+							  For="@(() => visit.Part.Quantity)"
+							  Immediate="false"
+			                  Label="Quantity" />
+		</MudCardContent>
+	</MudForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Create</MudButton>
+	</DialogActions>
+	</MudDialog>
