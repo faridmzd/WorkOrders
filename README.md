@@ -3,8 +3,6 @@
 
 A W.O. stands for Work Orders. It's a simple app to register and manage work orders along with their visits and parts(line items)
 
-Currently only API is available.
-
 What will be included in future releases:
 CQRS, DDD, unit, functional tests, and GraphQl support for specicific endpoints.
 
