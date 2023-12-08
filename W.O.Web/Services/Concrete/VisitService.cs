@@ -82,7 +82,7 @@ namespace W.O.Web.Services.Concrete
                 return response.IsSuccessStatusCode switch
                 {
                     true => Result.Ok((await response.Content.ReadFromJsonAsync<VisitDTO>())!),
-                    _ => Result.Fail(new Error(await response.Content.ReadAsStringAsync()))
+                    _ => Result.Fail(new Error("sala"))
                 };
             }
             catch (Exception)
