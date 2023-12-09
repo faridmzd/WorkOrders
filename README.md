@@ -7,7 +7,7 @@ What will be included in future releases:
 CQRS, DDD, unit, functional tests, and GraphQl support for specicific endpoints.
 
 In order to start the project 
-1. you'll need to add a valid SQL Connection string in appsettings.json
+1. you'll need to add a valid SQL Connection string in appsettings.json 
 
 2. run 'dotnet ef migrations add InitialCreate' in .NET CLI in order to add migrations.Make sure that you're running the command inside W.O.API folder. Before running it, make sure you've dotnet ef tool installed. To install use : 
 'dotnet tool install --global dotnet-ef' command.
